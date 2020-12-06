@@ -53,20 +53,39 @@ const serverHandle = (req, res) => {
     req.body = postData;
 
     //处理blog 路由
-    const blogData = handleBlogRouter(req, res);
+    // const blogData = handleBlogRouter(req, res);
 
-    if (blogData) {
-      // 把 JSON 类型的数据先转换为字符串，再响应给前端
-      res.end(JSON.stringify(blogData));
+    // if (blogData) {
+    //   // 把 JSON 类型的数据先转换为字符串，再响应给前端
+    //   res.end(JSON.stringify(blogData));
+    //   // 最后需要返回
+    //   return;
+    // }
+    const blogResult = handleBlogRouter(req, res);
+    if (blogResult) {
+      // blogData 为SuccessModule对象返回的结果
+      blogResult.then((blogData) => {
+        // console.log("blogData:", blogData);
+        // 把 JSON 类型的数据先转换为字符串，再响应给前端
+        res.end(JSON.stringify(blogData));
+      });
       // 最后需要返回
       return;
     }
 
     //处理user路由
-    const userData = handleUserRouter(req, res);
-    if (userData) {
-      res.end(JSON.stringify(userData));
+    // const userData = handleUserRouter(req, res);
+    // if (userData) {
+    //   res.end(JSON.stringify(userData));
+    // }
+    const userResult = handleUserRouter(req, res);
+    if (userResult) {
+      userResult.then((userData) => {
+        res.end(JSON.stringify(userData));
+      });
+      return;
     }
+
     //未命中路由，返回404
     res.writeHead(404, { "Content-type": "text/plain" });
     res.write("404 Not Found\n");

@@ -2,6 +2,7 @@
 
 # dependencies
 /blog-1/node_modules
+/mysql/node_modules
 /.pnp
 .pnp.js
 
